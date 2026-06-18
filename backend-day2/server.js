@@ -83,6 +83,7 @@
 
 
     // lắng nghe server ở cổng 3000 
+    const PORT = 5000; // cổng hoạt động khác so với 3000 thông thường 
     const PORT = 3000;
     app.listen(PORT , () => {
         console.log(`server dang chay http://localhost:${PORT}`)
