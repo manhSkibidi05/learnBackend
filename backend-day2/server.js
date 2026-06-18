@@ -28,14 +28,60 @@
 
     app.get('/tasks/:id' , (req , res) => {
         const idTask = parseInt(req.params.id);
-        if(idTask){
-            const result = tasks.filter(task => task.id === idTask);
-            res.status(200).json({data : result})
+        const result = tasks.find(task => task.id === idTask);
+
+        if(!result){
+            return res.status(404).json({error : 'Task không tồn tại'});
         }
-        return res.status(404).json({error : 'Task không tồn tại'});
+
+        res.status(200).json({data : result});
+    });
+
+    app.post('/tasks' , (req , res) => {
+        const {title} = req.body;
+
+        if(!title){
+            return res.status(400).json({error : 'Thiếu dữ liệu gửi về'})
+        }
+
+        const newTask = {
+            id : tasks.length + 1,
+            title,
+            status : 'pending'
+        }
+        tasks.push(newTask);
+        res.status(201).json({data : newTask})
+    });
+
+    app.patch('/tasks/:id' , (req , res) => {
+        const idTask = parseInt(req.params.id); 
+        const result = tasks.find(task => task.id === idTask);
+
+        if(!result){
+            return res.status(404).json({error : 'Task không tồn tại'});
+        } 
+
+        const {status} = req.body;
+        if(!status || !['pending' , 'done'].includes(status)){
+            return res.status(400).json({error : 'Dữ liệu không hợp lệ (pending hoặc done)'});
+        }
+
+        result.status = status;
+        res.status(200).json({data : result});
+    });
+
+    app.delete('/tasks/:id' , (req , res) => {
+        const idTask = parseInt(req.params.id);
+        const task = tasks.find(val => val.id === idTask);
+        if(!task){
+            return res.status(404).json({error : 'Task không tồn tại'});
+        }
+
+        tasks = tasks.filter(val => val.id !== idTask);
+        res.status(200).json({data : 'Đã xóa thành công'})
     })
 
-    
+
     // lắng nghe server ở cổng 3000 
     const PORT = 3000;
     app.listen(PORT , () => {
