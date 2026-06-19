@@ -86,5 +86,7 @@
     const PORT = 5000; // cổng hoạt động khác so với 3000 thông thường 
     const PORT = 3000;
     app.listen(PORT , () => {
-        console.log(`server dang chay http://localhost:${PORT}`)
+        console.log(`Sever đang được chạy tại http://localhost:${PORT}`)
     })
+
+    
