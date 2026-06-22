@@ -58,5 +58,4 @@
     // - Điểm quan trọng : Controllers bọc hoàn toàn các câu lệnh của hàm trong try/catch để có thể
     // bắt lỗi từ services trả về . Nó phân biệt lỗi 404 , 400 ,500 dựa vào message -> cách chuyên nghiệp hơn là dùng custom error class
     
-    module.exports = {getAll , getById , create , update , remove}
     
