@@ -2,17 +2,11 @@
 
     const productModel = require('../models/product.model');
 
-    const getAllPrd = (query = null) => {
-        let products;
-        if(query){
-            const {name , price} = query;
-            products = productModel.getAll(name || '' , price || 0);
-        }else{
-            products = productModel.getAll()
-        }
-
-        if(!products) throw new Error('Data not founds');
-        return products;
+    const getAllPrd = (query) => {
+        const filter = {};
+        if (query && query.name) filter.name = query.name;
+        if (query && query.price) filter.price = query.price;
+        return productModel.getAll(filter); // không cần throw nếu rỗng, controller vẫn trả 200
     }
 
     const getPrdById = (id) => {
@@ -23,7 +17,8 @@
     }
 
     const createNewPrd = (name , price) => {
-        if(name.trim() === '' || Number.parseInt(price) <= 0) throw new Error('Input value invalid');
+        const priceNum = parseFloat(price);
+        if(name.trim() === '' || isNaN(priceNum) || priceNum <=0 ) throw new Error('Input value invalid');
         const newPrd = productModel.createPrd(name , price);
         return newPrd;
     }
@@ -32,7 +27,8 @@
         if(!id || !newPrd) throw new Error('Input value invalid');
         
         const {name , price} = newPrd;
-        if(name.trim() === '' || Number.parseInt(price) <= 0) throw new Error('Input value invalid');
+        const priceNum = parseFloat(price);
+        if(name.trim() === '' || isNaN(priceNum) || priceNum <= 0) throw new Error('Input value invalid');
 
         const prd = productModel.updatePrd(Number.parseInt(id) , name , price);
         if(!prd) throw new Error('Data not founds');

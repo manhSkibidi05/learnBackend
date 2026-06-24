@@ -6,16 +6,18 @@
         {id : 3 , name : 'speaker' , price : 160},
     ]
 
-    const getAll = (namePrd = '' , pricePrd = 0) => {
-        if(products.length === 0) return null;
-        if(namePrd.trim() !== '' || pricePrd !== 0){
-            const prdFilter = products.filter(val => 
-                val.price === Number.parseInt(pricePrd)
-                || val.name.toLowerCase().includes(namePrd.trim().toLowerCase())
-            )
-            return prdFilter;
+    const getAll = (filter = {}) => {
+        let result = [...products];
+        if (filter.name) {
+            result = result.filter(p => p.name.toLowerCase().includes(filter.name.toLowerCase()));
         }
-        return products;
+        if (filter.price) {
+            const price = parseFloat(filter.price);
+            if (!isNaN(price)) {
+            result = result.filter(p => p.price === price);
+            }
+        }
+        return result; // mảng rỗng nếu không có kết quả
     }
 
     const getById = (id) => {
@@ -37,7 +39,8 @@
     const updatePrd = (id , name , price) => {
         let prd = products.find(val => val.id === id);
         if(!prd) return null;
-        prd = {...prd , name , price};
+        prd.name = name;
+        prd.price = price;
         return prd;
     }
 

@@ -178,4 +178,22 @@
             // - require(url) : hàm cho phép nhập giá trị vào 1 biến mang giá trị mà file khác đã xuất ra
             const objTask = require('./abc.js'); // nhập giá trị đã xuất của file abc.js
 
-        
+    // Ôn tập ngày 3 :
+
+        // - router là gì ? cách tạo ra 1 router ? 
+        // -> router là bộ định tuyến riêng có thể đăng kí middleware và định nghĩa các route mang đặc điểm chung (chung tiền tố url , chung 1 middleware) vào 1 router 
+        // -> sử dụng hàm Router() được cung cấp bởi express để tạo ra 1 router có thể nhóm các route và đăng kí middleware nhưng không thể lắng nghe và tạo server 
+        // -> Bạn có thể lồng các router bên trong 1 router khác để tổ chức sâu hơn 
+
+        // - cách đăng kí router vào server ? 
+        // -> với 1 server sử dụng hàm use() của ứng dụng để đăng kí middleware / router vào ứng dụng đó 
+        // -> với hàm use có thể thêm đường dẫn làm tham số đầu thì lúc này các request có đường dẫn với use sẽ đi vào router / middleware đăng kí 
+
+        // - middleware là gì ? route là gì ? 
+        // -> middleware là hàm xử lí tiền dữ liệu của request trước khi đưa dữ liệu đó vào cho route sử dụng 
+        // -> route là 1 middleware đặc biệt cung cấp điểm dừng cho request bằng cách so sánh url và method , nếu phù hợp sẽ chạy hàm handler của router sau đó trả về response và kết thúc request
+
+            // + middleware - các loại và thứ tự thực thi 
+            // -> thứ tự đăng kí các middleware rất quan trọng vì sẽ chạy từ trên xuống dưới và middeware phía trêm bắt buộc gọi next nếu không các middleware sau sẽ không được chạy
+            // -> có 3 loại middleware chính : application-level -> gắn trực tiếp vào app , router-level -> gắn vào router , error-handling middleware -> có 4 tham số (err , req, res, next) sử dụng để bắt lỗi
+            
