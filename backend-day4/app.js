@@ -1,11 +1,16 @@
     const mongoose = require('mongoose');
     const express = require('express');
-    const routerProduct = require('./src/routes/product.routes')
+    const routerProduct = require('./src/routes/product.routes');
+    const routerCategory = require('./src/routes/category.routes');
+    const errHandler = require('./src/middleware/errorHandler')
 
     const app = express();
     app.use(express.json());
 
     app.use('/products' , routerProduct);
+    app.use('/categories' , routerCategory);
+
+    app.use(errHandler);
 
 
     // Kết nối đến MongoDB Atlas (thay connection string của bạn)

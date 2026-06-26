@@ -157,3 +157,27 @@
         //     collection: 'tên_collection': đặt tên collection khác mặc định.
 
         //     toJSON, toObject: thêm virtuals, ẩn field (ví dụ password).
+
+// Review ngày 4 (tiếp) : 
+
+    // - MongoDB : là cơ sở dữ liệu lưu trữ dữ liệu dạng noSQL 
+    
+    // + Collection : là một tập hợp các document mang cấu trúc nhất quán với nhau có thể các trường không
+    // hoàn toàn giống nhau 
+    
+    // + Document : là một tài liệu lưu trữ dưới dạng BSON hỗ trợ nhiều kiểu dữ liệu hơn JSON thường 
+        // - trường _id nếu không định nghĩa thì sẽ được mongoDB định nghĩa -> sử dụng để định danh 1 dữ liệu duy nhất
+        // - các loại dữ liệu trong document có thể lưu : dữ liệu nguyên thủy (string , number...) , arr/obj , enum ...
+        // - các document trong cùng collection không bắt buộc có cùng cấu trúc nhưng để dễ quản lí và truy vấn bạn nên thiết kế tương đối đồng nhất
+        // - hỗ trợ việc lồng ghép obj và arr để biểu diễn quan hệ
+
+    // + Schema : là bản thiết kế để định nghĩa 1 Document , Schema định nghĩa các :
+        // - kiểu dữ liệu , ràng buộc , giá trị mặc định , index , getter/setter , virtual , middeware
+
+    // + Model : là một nhà sản xuất vận hành bản thiết kế của Schema , nó đại diện cho 1 Collection
+    // -> Dựa vào bản thiết kế Model giúp thao tác với mongoDB thêm , sửa , xóa... dữ liệu 
+
+    // + Mối quan hệ giữa Schema , Model , Collection 
+    // -> Schema định nghĩa bản thiết kế  -> Model biên dịch ra từ Schema thao tác trực tiếp vs database -> Collection
+    // quản lý bởi Model 
+
