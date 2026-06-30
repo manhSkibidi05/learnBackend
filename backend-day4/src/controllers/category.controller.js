@@ -28,4 +28,4 @@
         res.status(204).json({success : true });
     })
 
-    module.exports = {getAll , getById , create , update , remove}
+    module.exports = {getAll , getById , create , update , remove};

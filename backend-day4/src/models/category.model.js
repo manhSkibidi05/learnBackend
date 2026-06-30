@@ -23,10 +23,10 @@
     const getAll = async (query = {}) => {
         let filtered = {};
         if(query.name){
-            filtered.name = query.name;
+            filtered.name = { $regex : query.name , $options : 'i'};
         }
         if(query.isActive){
-            filtered.isActive = query.isActive;
+            filtered.isActive = query.isActive === 'true';
         }
         return await Category.find(filtered)
     }
@@ -40,7 +40,10 @@
     }
 
     const update = async (id , data) => {
-        return await Category.findByIdAndUpdate(id , data)
+        return await Category.findByIdAndUpdate(id , data , {
+            new : true,
+            runValidators : true
+        })
     }
 
     const remove = async (id) => {

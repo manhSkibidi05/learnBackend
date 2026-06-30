@@ -3,6 +3,7 @@
     const categoryModel = require('../models/category.model');
 
     const getAllCategory = async (query) => {
+        if(!query.name && !query.isActive) return await categoryModel.getAll()
         if(query.name.trim() === '' ){
             const err = new Error('Name không hợp lệ');
             err.statusCode = 400;
@@ -35,7 +36,18 @@
             err.statusCode = 400;
             throw err;
         }
-        return await categoryModel.update(id , data);
+        if(data.name && data.name.trim() !== ''){
+            const err = new Error('Tên danh mục không được để trống');
+            err.statusCode = 400;
+            throw err;
+        }
+        const updated = await categoryModel.update(id , data);
+        if(!updated){
+            const err = new Error('Danh mục không tồn tại');
+            err.statusCode = 404;
+            throw err;
+        }
+        return updated;
     }
 
     const removeCategory = async (id) => {
@@ -44,7 +56,12 @@
             err.statusCode = 400;
             throw err;
         }
-        return await categoryModel.remove(id);
+        const deleted = await categoryModel.remove(id);
+        if(!deleted){
+            const err = new Error('Danh mục không tồn tại');
+            err.statusCode =  404;
+            throw err;
+        }
     }
 
     module.exports = {getAllCategory , getCategoryById , createCategory , updateCategory , removeCategory}

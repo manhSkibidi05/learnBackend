@@ -181,3 +181,29 @@
     // -> Schema định nghĩa bản thiết kế  -> Model biên dịch ra từ Schema thao tác trực tiếp vs database -> Collection
     // quản lý bởi Model 
 
+// - Review ngày 4 : 
+
+    // MongoDB : Là hệ quản trị cơ sở dữ liệu NoSQL 1 dữ liệu sẽ được lưu dưới dạng Document
+    // - Các Khái niệm quan trọng của mongoDB
+        // 1. Database : Là cơ sở dữ liệu chứa nhiều collection , dùng để phân tách dữ liệu theo dự án hoặc môi trường
+
+        // 2. Document : Là 1 đơn vị lưu trữ cơ bản trong mongoDB tương đương với 1 bản ghi trong SQL 
+        // -> Document lưu trữ dữ liệu dưới dạng BSON
+        
+        // 3. BSON : Là định dạng dữ liệu nhị phân mở rộng của JSON , được mongoDB dùng để lưu trữ và trao đổi dữ liệu
+        // -> BSON chính là cách Document lưu trữ dữ liệu 
+        
+        // 4. Collection : Là nhóm các Document trong MongoDB , là nơi lưu trữ các Document thực tế trong MongoDB
+        // -> Các Document ở cùng 1 Collection không có Schema cố định có thể khác nhau về trường dữ liệu trong Document
+
+    // - Các Khái niệm quan trọng của mongoose 
+        // 1. Mongoose : Là thư viện cung cấp bởi node.js cho phép thao tác và kết nối với mongoDB thông qua phương thức và thuộc tính cung cấp sẵn
+
+        // 2. Schema : Là bản thiết kế cho cấu trúc 1 document , định nghĩa các trường , kiểu dữ liệu , ràng buộc
+        
+        // 3. Model : Là 1 constructor tạo từ 1 Schema , dùng để tương tác với 1 Collection cụ thể trong mongoDB ,
+        // cung cấp các phương thức CRUD
+        // -> Model là lớp chỉ là trung gian thực hiện yêu cầu sau đó sẽ gửi yêu cầu về database và Collection sẽ thực hiện 
+        // nó trong database 
+    
+    // -> Có thể hiểu là Database nơi lưu trữ dữ liệu thật trên mongoDB quản lí nó còn mongoose cung cấp các phương thức để thực hiện thao tác trung gian giữa database  và server
