@@ -207,3 +207,5 @@
         // nó trong database 
     
     // -> Có thể hiểu là Database nơi lưu trữ dữ liệu thật trên mongoDB quản lí nó còn mongoose cung cấp các phương thức để thực hiện thao tác trung gian giữa database  và server
+
+
