@@ -77,3 +77,80 @@
         // + Phù hợp với các truy vấn thông thường , không yêu cầu xử lí thống kê phức tạp 
 
 // 2. Aggregation Pipeline - Xử lý dữ liệu nâng cao 
+
+    // - Bản chất :
+        // + Aggregation Pipeline là chuỗi các giai đoạn xử lí dữ liệu tuần tự , mỗi giai đoạn nhận dữ liệu trả về từ giai đoạn trước 
+        // đó , sau đó sẽ thực hiện thao tác (lọc , nhóm , tính toán, ghép...) rồi cho ra output 
+        
+        // + Nó mạnh hơn find vì có thể thực hiện các phép toàn phức tạp như : GROUP BY , SUM , AVG , JOIN nhiều bảng 
+
+        // vd : Thống kê sản phẩm và giá trị trung bình theo danh mục , chỉ danh mục trên 2 sản phẩm 
+
+        const stats = await Product.aggregate(
+            [
+                // nhóm theo ObjectId category
+                {
+                    $group : {
+                        _id : '$category',
+                        count : {$sum : 1},
+                        avgPrice : { $avg : '$price' }
+                    }
+                },
+                // lọc nhóm có > 2 sản phẩm
+                {
+                    $match : {
+                        count : {$gt : 2}
+                    }
+                },
+                // Join với collection categories
+                {
+                    $lookup: {                        
+                    from: 'categories',
+                    localField: '_id',
+                    foreignField: '_id',
+                    as: 'categoryInfo'
+                    }
+                },
+                { $unwind: '$categoryInfo' },
+                {
+                    $project: {
+                    _id: 0,
+                    category: '$categoryInfo.name',
+                    count: 1,
+                    avgPrice: { $round: ['$avgPrice', 2] }
+                    }
+                },
+                { $sort: { count: -1 } }
+            ]
+        )
+
+    // - Sử dụng khi : 
+        // + Thống kê , báo cáo : Tổng doanh thu , số lượng đơn hàng theo tháng ..
+        // + Tìm kiếm phức tạp : Kết hợp nhiều điều kiện , lọc dữ liệu đã được nhóm 
+        // + Biến đổi dữ liệu : Thay đổi cấu trúc document trước khi trả về client
+        // + Dashboard : cần nhiều chỉ số khác nhau 
+
+// 3. Index - Tăng tốc truy vấn 
+
+    // - Bản chất : 
+        // + Index là cấu trúc dữ liệu đặc biệt (B-tree) lưu trữ một phần dữ liệu của collection theo thứ tự nhất định , giúp mongoDB
+        // tìm Document nhanh chóng mà không cần quét toàn bộ 1 collection 
+
+        // -> Giống như mục lục trong sách : thay vì đọc từng trang thì tìm theo từ khóa rồi nhảy tới trang chính xác 
+
+    // - Các loại index : 
+        // + Single Field Index : trên một trường 
+        // + Compound Index : trên nhiều trường , hỗ trọ truy vấn kết hợp 
+        // + Unique Index : đảm bảo giá trị không trùng , thường dùng cho email , username
+        // + Text Index : cho phép tìm kiếm văn bản ($text , $search) , hỗ trợ stemming , stop words 
+        // + Geospatial Index : cho toạn độ (2dsphere) 
+
+    // - Vd : 
+    productSchema.index({ name : 1 });
+    productSchema.index({category : 1 , price : -1});
+    productSchema.index({name : 'text' , descripton : 'text'});
+
+    // - Khi nào sử dụng : 
+        // + Trường thường xuyên nằm trong find , $macth , sort 
+        // + Đảm bảo duy nhất như email , username 
+        // + Tìm kiếm full-text : Khi cần tìm kiếm theo từ khóa trong nội dung lớn 
